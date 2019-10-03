@@ -9,9 +9,8 @@ class DayView extends React.Component{
   render(){
     
     return(
-    <View style={styles.container}>
-      
-        <DayTable/> 
+    <View style={tablestyles.container}>
+      <DayTable/> 
     </View>
 
     )}
@@ -36,17 +35,17 @@ class MonthView extends React.Component{
     )}
   
 }
+
 class DayTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableHead: ['', 'Head1', 'Head2', 'Head3'],
-      tableTitle: ['Title', 'Title2', 'Title3', 'Title4'],
+      tableHead: ['Head', 'Head2', 'Head3', 'Head4'],
       tableData: [
-        ['1', '2', '3'],
-        ['a', 'b', 'c'],
-        ['1', '2', '3'],
-        ['a', 'b', 'c']
+        ['1', '2', '3', '4'],
+        ['a', 'b', 'c', 'd'],
+        ['1', '2', '3', '456\n789'],
+        ['a', 'b', 'c', 'd']
       ]
     }
   }
@@ -54,18 +53,21 @@ class DayTable extends React.Component {
   render() {
     const state = this.state;
     return (
-      <View style={styles.container}>
-        <Table borderStyle={{borderWidth: 1}}>
-          <Row data={state.tableHead} flexArr={[1, 2, 1, 1]} style={styles.head} textStyle={styles.text}/>
-          <TableWrapper style={styles.wrapper}>
-            <Col data={state.tableTitle} style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
-            <Rows data={state.tableData} flexArr={[2, 1, 1]} style={styles.row} textStyle={styles.text}/>
-          </TableWrapper>
+      <View style={tablestyles.container}>
+        <Table borderStyle={{borderWidth: 5, borderColor: '#c1e1ff'}}>
+          <Row data={state.tableHead} style={tablestyles.head} textStyle={tablestyles.text}/>
+          <Rows data={state.tableData} textStyle={tablestyles.text}/>
         </Table>
       </View>
     )
   }
 }
+ 
+const tablestyles = StyleSheet.create({
+  container: { flex: 1, padding: 15, paddingTop: 50, backgroundColor: '#fff' },
+  head: { height: 40, backgroundColor: '#f1f8ff' },
+  text: { margin: 6 }
+});
 
 const styles = StyleSheet.create({
   container: {

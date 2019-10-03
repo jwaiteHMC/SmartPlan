@@ -8,8 +8,7 @@ import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-componen
 class DayView extends React.Component{
   render(){
     return(
-    <View style={tablestyles.container}>
-      <Text>Date</Text>
+    <View style={daytablestyles.container}>
       <DayTable/> 
     </View>
     )}
@@ -18,8 +17,9 @@ class DayView extends React.Component{
 class WeekView extends React.Component{
   render(){
     return(
-    <View style = {{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <Text> Week!</Text>
+    <View style = {weektablestyles.container}>
+      <Text> Week </Text>
+      <WeekTable/> 
     </View>
     )}
   
@@ -28,43 +28,43 @@ class WeekView extends React.Component{
 class MonthView extends React.Component{
   render(){
     return(
-    <View style = {{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <Text> Month!</Text>
+    <View style = {monthtablestyles.container}>
+      <Text> Month, Year </Text>
+      <MonthTable/>
     </View>
     )}
   
 }
 
-
-
-class DayTable extends React.Component {
+class MonthTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableHead: ['Times', 'Events'],
-      widthArr: [60, 355]
+      tableHead: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      widthArr: [100, 100, 100, 100, 100, 100, 100]
     }
   }
  
   render() {
     const state = this.state;
     const tableData = [];
-    for (let i = 0; i < 30; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       const rowData = [];
-      for (let j = 0; j < 9; j += 1) {
-        rowData.push(`${i}${j}`);
+      for (let j = 0; j < 8; j += 1) {
+        day = (i*7)+j;
+        rowData.push(`${day}`);
       }
       tableData.push(rowData);
-    }
- 
+    } 
+    
     return (
-      <View style={tablestyles.container}>
+      <View style={monthtablestyles.container}>
         <ScrollView horizontal={true}>
           <View>
             <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
-              <Row data={state.tableHead} widthArr={state.widthArr} style={tablestyles.header} textStyle={tablestyles.text}/>
+              <Row data={state.tableHead} widthArr={state.widthArr} style={monthtablestyles.header} textStyle={monthtablestyles.text}/>
             </Table>
-            <ScrollView style={tablestyles.dataWrapper}>
+            <ScrollView style={monthtablestyles.dataWrapper}>
               <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
                 {
                   tableData.map((rowData, index) => (
@@ -72,8 +72,116 @@ class DayTable extends React.Component {
                       key={index}
                       data={rowData}
                       widthArr={state.widthArr}
-                      style={[tablestyles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
-                      textStyle={tablestyles.text}
+                      style={[monthtablestyles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+                      textStyle={monthtablestyles.text}
+                    />
+                  ))
+                }
+              </Table>
+            </ScrollView>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }
+}
+
+
+class WeekTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tableHead: ['Times', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      widthArr: [60, 100, 100, 100, 100, 100, 100, 100]
+    }
+  }
+ 
+  render() {
+    const state = this.state;
+    const tableData = [];
+    for (let i = 0; i < 24; i += 1) {
+      const rowData = [];
+      rowData.push(`${i}` + `:00`);
+      tableData.push(rowData);
+      rowData = [];
+      rowData.push(`${i}` + `:30`);
+      // for (let j = 0; j < 9; j += 1) {
+      //   rowData.push(`${i}${j}`);
+      // }
+      tableData.push(rowData);
+    }
+ 
+    return (
+      <View style={weektablestyles.container}>
+        <ScrollView horizontal={true}>
+          <View>
+            <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
+              <Row data={state.tableHead} widthArr={state.widthArr} style={weektablestyles.header} textStyle={weektablestyles.text}/>
+            </Table>
+            <ScrollView style={weektablestyles.dataWrapper}>
+              <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
+                {
+                  tableData.map((rowData, index) => (
+                    <Row
+                      key={index}
+                      data={rowData}
+                      widthArr={state.widthArr}
+                      style={[weektablestyles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+                      textStyle={weektablestyles.text}
+                    />
+                  ))
+                }
+              </Table>
+            </ScrollView>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }
+}
+
+
+class DayTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tableHead: ['Times', 'Date'],
+      widthArr: [60, 355]
+    }
+  }
+ 
+  render() {
+    const state = this.state;
+    const tableData = [];
+    for (let i = 0; i < 24; i += 1) {
+      const rowData = [];
+      rowData.push(`${i}` + `:00`);
+      tableData.push(rowData);
+      rowData = [];
+      rowData.push(`${i}` + `:30`);
+      // for (let j = 0; j < 9; j += 1) {
+      //   rowData.push(`${i}${j}`);
+      // }
+      tableData.push(rowData);
+    }
+ 
+    return (
+      <View style={daytablestyles.container}>
+        <ScrollView horizontal={true}>
+          <View>
+            <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
+              <Row data={state.tableHead} widthArr={state.widthArr} style={daytablestyles.header} textStyle={daytablestyles.text}/>
+            </Table>
+            <ScrollView style={daytablestyles.dataWrapper}>
+              <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
+                {
+                  tableData.map((rowData, index) => (
+                    <Row
+                      key={index}
+                      data={rowData}
+                      widthArr={state.widthArr}
+                      style={[daytablestyles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+                      textStyle={daytablestyles.text}
                     />
                   ))
                 }
@@ -86,8 +194,24 @@ class DayTable extends React.Component {
   }
 }
  
-const tablestyles = StyleSheet.create({
-  container: { flex: 1, padding: 0, paddingTop: 40, backgroundColor: '#fff' },
+const monthtablestyles = StyleSheet.create({
+  container: { flex: 1, padding: 0, paddingTop: 50, backgroundColor: '#fff' },
+  header: { height: 50, backgroundColor: '#537791' },
+  text: { textAlign: 'center', fontWeight: '100' },
+  dataWrapper: { marginTop: -1 },
+  row: { height: 40, backgroundColor: '#E7E6E1' }
+});
+
+const daytablestyles = StyleSheet.create({
+  container: { flex: 1, padding: 0, paddingTop: 25, backgroundColor: '#fff' },
+  header: { height: 50, backgroundColor: '#537791' },
+  text: { textAlign: 'center', fontWeight: '100' },
+  dataWrapper: { marginTop: -1 },
+  row: { height: 40, backgroundColor: '#E7E6E1' }
+});
+
+const weektablestyles = StyleSheet.create({
+  container: { flex: 1, padding: 0, paddingTop: 50, backgroundColor: '#fff' },
   header: { height: 50, backgroundColor: '#537791' },
   text: { textAlign: 'center', fontWeight: '100' },
   dataWrapper: { marginTop: -1 },

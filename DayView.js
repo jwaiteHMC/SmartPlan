@@ -25,7 +25,7 @@ export default class DayView extends React.Component{
   }
 
   const styles = StyleSheet.create({
-    container: { flex: 1, alignContent: 'center', paddingTop: 100, backgroundColor: '#fff' },
+    container: { flex: 1, alignContent: 'center', paddingTop: 50, backgroundColor: '#fff' },
     head: {  height: 40,  backgroundColor: '#f1f8ff'  },
     wrapper: { flexDirection: 'row' },
     title: { flex: 1, backgroundColor: '#f6f8fa' },

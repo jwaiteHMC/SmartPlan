@@ -44,6 +44,7 @@ export default class MonthTable extends React.Component {
                       data={rowData}
                       widthArr={state.widthArr}
                       style={[monthtablestyles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+                      //style={[weektablestyles.row]} // make all rows white 
                       textStyle={monthtablestyles.text}
                     />
                   ))
@@ -62,6 +63,6 @@ export default class MonthTable extends React.Component {
     header: { height: 50, backgroundColor: '#537791' },
     text: { textAlign: 'center', fontWeight: '100' },
     dataWrapper: { marginTop: -1 },
-    row: { height: 40, backgroundColor: '#E7E6E1' }
+    row: { height: 40, backgroundColor: '#fff' }
   });
   

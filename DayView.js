@@ -1,35 +1,37 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Alert,} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, ScrollView, TextInput} from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator} from 'react-navigation-tabs';
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import DayTable from './DayTable'
 
  //In this class definition, the Day Tab of the SmartPlan App is defined.
 export default class DayView extends React.Component{
-    render(){
-      return(
-      <View style={styles.container}>
-        <Text>Hi</Text> 
-        {/* Add Buttons to the Day Tab */}
-        {/* This will show a pop-up with the text below */}
-        <Button 
-            title="Press for help"
-            onPress={() => Alert.alert('Sorry this feature is not available')}
-          /> 
-          {/*This will create a butotn that goes to the week tab on click */}
-          <Button
-            title="Go to Week" 
-            onPress={() => this.props.navigation.navigate('Week')}
-          />
-          <DayTable/>
-          </View>
-      )}
-  }
+ render(){
+   todayDay = new Date().getDate(); // gets current day
+   todayMonth =  new Date().getMonth(); // gets current month (numerical representation, starts from 0)
+   // changes numerical representation of month to name representation of month
+   const months =  ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+   monthName = months[todayMonth];
 
-  const styles = StyleSheet.create({
-    container: { flex: 1, alignContent: 'center', paddingTop: 50, backgroundColor: '#fff' },
-    head: {  height: 40,  backgroundColor: '#f1f8ff'  },
-    wrapper: { flexDirection: 'row' },
-    title: { flex: 1, backgroundColor: '#f6f8fa' },
-    row: {  height: 28  },
-    text: { textAlign: 'center' }
+   return(
+   <View style={daytablestyles.container}>
+     <View style={{flexDirection: 'row', height: 80, paddingTop: 50, justifyContent: 'center'}}>
+       <Text style = {{fontSize: 20, fontWeight: 'bold'}}> {monthName} {todayDay}</Text> 
+     </View>
+     <View style= {daytablestyles.container}>
+       <DayTable/> 
+     </View>
+   </View>
+   )}
+}
+
+//style for Day table 
+const daytablestyles = StyleSheet.create({
+    container: { flex: 1, padding: 0, paddingTop: 0, backgroundColor: '#fff' },
+    header: { height: 50, backgroundColor: '#537791' },
+    text: { textAlign: 'center', fontWeight: '100' },
+    dataWrapper: { marginTop: -1 },
+    row: { height: 40, backgroundColor: '#E7E6E1' }
   });
   

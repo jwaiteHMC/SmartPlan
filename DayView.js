@@ -17,7 +17,7 @@ export default class DayView extends React.Component{
    return(
    <View style={daytablestyles.container}>
      <View style={{flexDirection: 'row', height: 80, paddingTop: 50, justifyContent: 'center'}}>
-       <Text style = {{fontSize: 20, fontWeight: 'bold'}}> {monthName} {todayDay}</Text> 
+       <Text style = {{fontSize: 20, fontWeight: 'bold'}}> Today is: {monthName} {todayDay}</Text> 
      </View>
      <View style= {daytablestyles.container}>
        <DayTable/> 

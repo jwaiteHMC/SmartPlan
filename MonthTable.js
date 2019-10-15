@@ -15,18 +15,44 @@ export default class MonthTable extends React.Component {
   }
  
   render() {
+    todayYear = new Date().getFullYear(); // gets current day
+    todayMonth =  new Date().getMonth(); // gets current month (numerical representation, starts from 0)
+    currentdate = new Date(todayYear,todayMonth);
+    var moment = require('moment');
+    var startMoment = moment([todayYear, todayMonth]); 
+    var startMonth = moment(startMoment).startOf('month'); //gets first day of current month
+    var weekdayStart = startMonth.getDay //gets the weekday of first of current month
+    var daysInMonth = currentdate.getDate(); //gets number of days in current month
 
+    // const state = this.state;
+    // const tableData = [];
+    // for (let i = 0; i < 5; i += 1) {
+    //   const rowData = [];
+    //   for (let j = 1; j < 9; j += 1) {
+    //     day = (i*7)+j;
+    //     rowData.push(`${day}`);
+    //   }
+    //   tableData.push(rowData);
+    // } 
+
+    // puts days in correct alignment on calender 
     const state = this.state;
     const tableData = [];
-    for (let i = 0; i < 5; i += 1) {
+    const rowData = [];
+    var daycounter = 0;
 
-      const rowData = [];
-      for (let j = 1; j < 9; j += 1) {
-        day = (i*7)+j;
-        rowData.push(`${day}`);
+    //puts correct days for first week of the month - does not work 
+    for (let i = 0; i < 7; i++){
+      if (i < weekdayStart){
+          rowData.push(' ')
+      }
+      if (i >= weekdayStart){
+        rowData.push(`${daycounter}`); 
+        daycounter++;
       }
       tableData.push(rowData);
-    } 
+    }
+
     
     return (
       <View style={monthtablestyles.container}>
@@ -44,6 +70,7 @@ export default class MonthTable extends React.Component {
                       data={rowData}
                       widthArr={state.widthArr}
                       style={[monthtablestyles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+                      //style={[weektablestyles.row]} // make all rows white 
                       textStyle={monthtablestyles.text}
                     />
                   ))
@@ -62,6 +89,6 @@ export default class MonthTable extends React.Component {
     header: { height: 50, backgroundColor: '#537791' },
     text: { textAlign: 'center', fontWeight: '100' },
     dataWrapper: { marginTop: -1 },
-    row: { height: 40, backgroundColor: '#E7E6E1' }
+    row: { height: 40, backgroundColor: '#fff' }
   });
   

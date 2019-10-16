@@ -1,21 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Alert, ScrollView, TextInput} from 'react-native';
 import { Table, Row,} from 'react-native-table-component';
+import NewFirebase from './NewFirebase'
+import * as firebase from 'firebase'
 
 export default class EventList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tableHead: ['Event', 'Date', 'Decription', 'Time Start', 'Time End'],
+    this.state = { 
+      tableHead: ['Event', 'Date', 'Description', 'Time Start', 'Time End'],
       widthArr: [50, 120 , 200,  80, 80,],
-      index: 1,
+      index: 1, 
       tableData: [],
-      event: ' ',
+      eventName: ' ', 
       date: ' ',
       timeStart: ' ',
       timeEnd: ' ',
 
     }
+    //this.handleSubmit = this.handleSubmit.bind(this);
+    //Initialize firebase
+    if(!firebase.apps.length) {firebase.initializeApp(NewFirebase.FirebaseConfig); }
   }
   //Add the input information to the the table storing event information
   __addRows() {
@@ -24,7 +29,7 @@ export default class EventList extends React.Component {
     //pushing values to the 
     rowData.push(`${this.state.index}`);
     rowData.push(`${this.state.date}`); 
-    rowData.push(`${this.state.event}`);
+    rowData.push(`${this.state.eventName}`);
     rowData.push(`${this.state.timeStart}`)
     rowData.push(`${this.state.timeEnd}`)
     rowData.push(`${'-'}`)
@@ -34,7 +39,24 @@ export default class EventList extends React.Component {
     //Update index value
     this.setState({index: this.state.index + 1})
   }
-  
+  onHandleSubmit(){
+    const itemsRef = firebase.database().ref('event');
+    const event = {
+      num: this.state.index,
+      eventName: this.state.eventName, 
+      date: this.state.date,
+      timeStart: this.state.timeStart,
+      timeEnd: this.state.timeEnd,
+    }
+    itemsRef.push(event);
+    this.setState({
+      index: this.state.index + 1,
+      eventName: ' ', 
+      date: ' ',
+      timeStart: ' ',
+      timeEnd: ' ',
+    })
+  }
   render() {
     const state = this.state; 
     
@@ -45,12 +67,12 @@ export default class EventList extends React.Component {
           <TextInput
             style={{height: 40, width: 150}}
             placeholder="Type here to translateeeee!"
-            onChangeText={(event) => this.setState({event})}
-            value={this.state.event}
+            onChangeText={(eventName) => this.setState({eventName})}
+            value={this.state.eventName}
           />
           <Text >Event Date </Text>
           <TextInput
-            style={{height: 40, width: 100}}
+            style={{height: 40, width: 100 }}
             placeholder="Type here to translateeeee!"
             onChangeText={(date) => this.setState({date})}
             value={this.state.date}
@@ -73,9 +95,10 @@ export default class EventList extends React.Component {
           />
           </View>
           <Button
+
           title="Add New Event"
           
-          onPress={() => this.__addRows()}/>
+          onPress={() => this.onHandleSubmit()}/>
         <ScrollView horizontal={true}>
           <View>
             <Table borderStyle={{borderWidth: 4, borderColor: '#C1C0B9'}}>

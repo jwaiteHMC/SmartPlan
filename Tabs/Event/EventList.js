@@ -8,14 +8,15 @@ export default class EventList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      tableHead: ['Event', 'Date', 'Description', 'Time Start', 'Time End'],
-      widthArr: [50, 120 , 200,  80, 80,],
+      tableHead: ['Event', 'Date', 'Description', 'Time Start', 'Time End', 'Remove'],
+      widthArr: [50, 120 , 200,  80, 80, 80],
+      test: [50, 120 , 200,  80, 80, 80],
       index: 1, 
       tableData: [],
-      eventName: ' ', 
-      date: ' ',
-      timeStart: ' ',
-      timeEnd: ' ',
+      eventName: '', 
+      date: '',
+      timeStart: '',
+      timeEnd: '',
 
     }
     //this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,22 +24,6 @@ export default class EventList extends React.Component {
     if(!firebase.apps.length) {firebase.initializeApp(NewFirebase.FirebaseConfig); }
   }
   //Add the input information to the the table storing event information
-  __addRows() {
-    table = this.state.tableData
-    rowData = []
-    //pushing values to the 
-    rowData.push(`${this.state.index}`);
-    rowData.push(`${this.state.date}`); 
-    rowData.push(`${this.state.eventName}`);
-    rowData.push(`${this.state.timeStart}`)
-    rowData.push(`${this.state.timeEnd}`)
-    rowData.push(`${'-'}`)
-    table.push(rowData)
-    //Rerender table with new information
-    this.setState({tableData: table})
-    //Update index value
-    this.setState({index: this.state.index + 1})
-  }
   onHandleSubmit(){
     const itemsRef = firebase.database().ref('event');
     const event = {
@@ -48,52 +33,74 @@ export default class EventList extends React.Component {
       timeStart: this.state.timeStart,
       timeEnd: this.state.timeEnd,
     }
+
     itemsRef.push(event);
+
+
     this.setState({
+      eventName: '',
       index: this.state.index + 1,
-      eventName: ' ', 
-      date: ' ',
-      timeStart: ' ',
-      timeEnd: ' ',
+      date: '',
+      timeStart: '',
+      timeEnd: '',
     })
+  }
+  componentDidMount() {
+    const itemsRef = firebase.database().ref('event');
+    itemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newTable = [];
+        for (let item in items) {
+        newTable.push({
+          
+          id: item,
+          num: items[item].num,
+          eventName: items[item].eventName, 
+          date: items[item].date,
+          timeStart: items[item].timeStart,
+          timeEnd: items[item].timeEnd,
+        });
+      }
+      this.setState({
+        tableData: newTable
+        
+      });
+    });
   }
   render() {
     const state = this.state; 
-    
+    console.log(this.state.tableData);
+    console.log(this.state.test);
     return (
-      <View style={eventStyles.container}>
-        <View style = {{flexDirection: 'row'}}>
-          <Text>Event Name </Text>
-          <TextInput
-            style={{height: 40, width: 150}}
-            placeholder="Type here to translateeeee!"
-            onChangeText={(eventName) => this.setState({eventName})}
-            value={this.state.eventName}
-          />
-          <Text >Event Date </Text>
-          <TextInput
-            style={{height: 40, width: 100 }}
-            placeholder="Type here to translateeeee!"
-            onChangeText={(date) => this.setState({date})}
-            value={this.state.date}
-            />
-            </View> 
-            <View style = {{flexDirection: 'row'}}>
-          <Text >Time Start </Text>
-          <TextInput
-            style={{height: 40, width: 100}}
-            placeholder="Type here to translateeeee!"
-            onChangeText={(timeStart) => this.setState({timeStart})}
-            value={this.state.timeStart}
-          />
-          <Text>Time End</Text>
-          <TextInput
-            style={{height: 40, width: 100}}
-            placeholder="Type here to translateeeee!"
-            onChangeText={(timeEnd) => this.setState({timeEnd})}
-            value={this.state.timeEnd}
-          />
-          </View>
+      <View>
+        <View style={{flexDirection: 'row', padding: 10}}>
+        <TextInput
+          style={{height: 40, width: 200}}
+          placeholder="Event Name"
+          onChangeText={(eventName) => this.setState({eventName})}
+          value={this.state.eventName}
+        />
+        <TextInput
+          style={{height: 40, width: 200}}
+          placeholder="Event Date"
+          onChangeText={(date) => this.setState({date})}
+          value={this.state.date}
+        />
+        </View> 
+        <View style={{flexDirection: 'row'}}>
+        <TextInput
+          style={{height: 40, width: 200}}
+          placeholder="Start Time "
+          onChangeText={(timeStart) => this.setState({timeStart})}
+          value={this.state.timeStart}
+        />
+        <TextInput
+          style={{height: 40, width: 200}} 
+          placeholder="End Time"
+          onChangeText={(timeEnd) => this.setState({timeEnd})}
+          value={this.state.timeEnd }
+        />
+        </View>
           <Button
 
           title="Add New Event"
@@ -107,30 +114,28 @@ export default class EventList extends React.Component {
             <ScrollView style={eventStyles.dataWrapper}>
               <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
                 {
-                  state.tableData.map((rowData, index) => (
-                    <Row
-                      key={index}
-                      data={rowData}
+                  state.tableData.map((item) => (
+                    <Row 
+                      key={item.id}
+                      data={[item.num,item.date,item.eventName,item.timeStart, item.timeEnd]}
                       widthArr={state.widthArr}
-                      style={[styles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
+                      style={[styles.row, item%2 && {backgroundColor: '#F7F6E7'}]}
                       textStyle={styles.text}
                     />
                   ))
                 }
               </Table> 
             </ScrollView>
-          </View>  
+          </View>   
         </ScrollView>      
       </View>
     )
   }
 }
 const eventStyles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff'},
-    header: { height: 50, backgroundColor: '#537791' },
-    text: { textAlign: 'center', fontWeight: '100' },
+    container: { flex: 1, backgroundColor: '#fff'},
     dataWrapper: { marginTop: -1 },
-    row: { height: 40, backgroundColor: '#E7E6E1' }
+    row: {backgroundColor: '#E7E6E1' }
     
   });
 

@@ -1,16 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Alert, ScrollView, TextInput} from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Table, Row,} from 'react-native-table-component';
 import NewFirebase from './NewFirebase'
-import * as firebase from 'firebase'
-
+import * as firebase from 'firebase' 
 export default class EventList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       tableHead: ['Event', 'Date', 'Description', 'Time Start', 'Time End', 'Remove'],
       widthArr: [50, 120 , 200,  80, 80, 80],
-      test: [50, 120 , 200,  80, 80, 80],
       index: 1, 
       tableData: [],
       eventName: '', 
@@ -67,10 +65,20 @@ export default class EventList extends React.Component {
       });
     });
   }
+  removeItem(itemId) {
+    const itemRef = firebase.database().ref(`/event/${itemId}`);
+    itemRef.remove();
+  }
   render() {
     const state = this.state; 
-    console.log(this.state.tableData);
-    console.log(this.state.test);
+    const RemoveButton = (index) => (
+      <TouchableOpacity onPress={() => this.removeItem(index)}>
+        <View style={styles.btn}>
+          <Text style={styles.btnText}>Remove</Text>
+        </View> 
+      </TouchableOpacity>
+    );
+
     return (
       <View>
         <View style={{flexDirection: 'row', padding: 10}}>
@@ -117,7 +125,7 @@ export default class EventList extends React.Component {
                   state.tableData.map((item) => (
                     <Row 
                       key={item.id}
-                      data={[item.num,item.date,item.eventName,item.timeStart, item.timeEnd]}
+                      data={[item.num,item.date,item.eventName,item.timeStart, item.timeEnd, RemoveButton(item.id)]}
                       widthArr={state.widthArr}
                       style={[styles.row, item%2 && {backgroundColor: '#F7F6E7'}]}
                       textStyle={styles.text}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator} from 'react-navigation-tabs';
 import EventView from './Tabs/Event/EventView'
 import MonthView from './Tabs/Month/MonthView'
@@ -25,4 +26,4 @@ export default class AppContainer extends React.Component{
         <AppContainer/>
       )
     }
-  } 
+  }

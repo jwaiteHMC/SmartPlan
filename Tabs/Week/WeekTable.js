@@ -12,7 +12,7 @@ export default class WeekTable extends React.Component {
       tableHead: ['Time', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       widthArr: [60, 100, 100, 100, 100, 100, 100, 100]
     }
-  }
+  } 
  
 
 

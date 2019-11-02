@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity
 import { Table, Row,} from 'react-native-table-component';
 import NewFirebase from './NewFirebase'
 import * as firebase from 'firebase' 
+
 export default class EventList extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +11,6 @@ export default class EventList extends React.Component {
       tableHead: ['Event', 'Date', 'Description', 'Time Start', 'Time End', 'Remove'],
       widthArr: [50, 120 , 200,  80, 80, 80],
       index: 1, 
-      tableData: [],
       eventName: '', 
       date: '',
       timeStart: '',
@@ -59,10 +59,8 @@ export default class EventList extends React.Component {
           timeEnd: items[item].timeEnd,
         });
       }
-      this.setState({
-        tableData: newTable
-        
-      });
+      global.tableData = newTable;
+      this.forceUpdate();
     });
   }
   removeItem(itemId) {
@@ -122,7 +120,7 @@ export default class EventList extends React.Component {
             <ScrollView style={eventStyles.dataWrapper}>
               <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
                 {
-                  state.tableData.map((item) => (
+                  global.tableData.map((item) => (
                     <Row 
                       key={item.id}
                       data={[item.num,item.date,item.eventName,item.timeStart, item.timeEnd, RemoveButton(item.id)]}

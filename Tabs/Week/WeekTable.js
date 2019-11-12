@@ -9,7 +9,7 @@ export default class WeekTable extends React.Component {
     super(props);
 
     this.state = {
-      tableHead: ['Time', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      tableHead: [['Time', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']],
       widthArr: [60, 100, 100, 100, 100, 100, 100, 100]
     }
   } 
@@ -27,15 +27,26 @@ export default class WeekTable extends React.Component {
       rowData.push(`${i}` + `:30`);
       tableData.push(rowData);
     }
+    
+    var today = new Date();
+    var currentDayOfWeek = today.getDay();
 
-
- 
     return (
       <View style={weektablestyles.container}>
         <ScrollView horizontal={true}>
           <View>
             <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
-              <Row data={state.tableHead} widthArr={state.widthArr} style={weektablestyles.header} textStyle={weektablestyles.text}/>
+              {
+                state.tableHead.map((rowData, index) => (
+                    <TableWrapper key={index} style={weektablestyles.header}>
+                    {
+                      rowData.map((cellData, cellIndex) => (
+                      <Cell key={cellIndex} data={cellData} style={cellIndex == ((1 + currentDayOfWeek) % 7) ? weektablestyles.headerToday : weektablestyles.headerCell} textStyle={weektablestyles.text}/>
+                      ))
+                    }
+                  </TableWrapper>
+))
+              }
             </Table>
             <ScrollView style={weektablestyles.dataWrapper}>
               <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
@@ -63,8 +74,19 @@ export default class WeekTable extends React.Component {
 //style for Week table 
 const weektablestyles = StyleSheet.create({
     container: { flex: 1, padding: 0, paddingTop: 0, backgroundColor: '#fff' },
-    header: { height: 50, backgroundColor: '#537791',},
+    header: { flexDirection: 'row', height: 50,},
+    headerCell: {backgroundColor: '#537791', width: 85,},
+    headerToday: {backgroundColor: '#ffff00', width: 85,},
     text: { textAlign: 'center', fontWeight: '100' },
     dataWrapper: { marginTop: -1 },
-    row: { height: 40, backgroundColor: '#fff' }
+    row: { flexDirection: 'row', height: 40, backgroundColor: '#fff' }
 });
+  //<Row data={state.tableHead} widthArr={state.widthArr} style={weektablestyles.header} textStyle={weektablestyles.text}/>
+/*<TableWrapper key={index}>
+                    {
+                      rowData.map((cellData, cellIndex) => (
+                      <Cell key={cellIndex} data={cellIndex === 3 ? element(cellData, index) : cellData} textStyle={styles.text}/>
+                      ))
+                    }
+                  </TableWrapper>*/
+

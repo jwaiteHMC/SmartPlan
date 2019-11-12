@@ -17,20 +17,28 @@ export default class DayTable extends React.Component {
    
     render() {
       const tableData = [];
+      for(let j = 0; j < global.tableData.length; j++){
+        global.getStartTimes(global.tableData[j].timeStart, global.tableData[j].timeEnd);
+        console.log(global.startTimes);
+        }
       for (let i = 0; i < 48; i += 1) {
 
         const rowData = [];
         minutes = i % 2 ? '30' : '00' ;
         var added = `${Math.floor(i / 2)}` + `:` + minutes;
         rowData.push(added);
-        for(let j = 0; j < global.tableData.length; j++){
-          if(global.getTimeBlock(global.tableData[j].timeStart) ==  i){
-            
-            rowData.push(global.tableData[j].timeStart);
-          }
+        if(global.startTimes.includes(i)){
+          rowData.push("Event Begins");
+        }
+        else if(global.endTimes.includes(i)){
+          rowData.push("----------------------------------------------------------")
+        }
+        else{
+          rewData.push("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||")
         }
         tableData.push(rowData);
-      } 
+        }
+        
       return (
         <View style={daytablestyles.container}>
           <ScrollView horizontal={true}>

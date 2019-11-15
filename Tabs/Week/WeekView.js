@@ -75,7 +75,7 @@ function calculateBeginningOfWeek() {
     // Find the day of the month of the first day (Sunday) of the current week
     var weekStartDay = cDay - cDayOfWeek;
     if(weekStartDay < 1) {
-       weekStartDay = daysInPreviousMonth - weekStartDay;
+       weekStartDay = daysInPreviousMonth + weekStartDay;
        beginningOfWeek = beginningOfWeek + months[pMonth] + ' '; 
     } else {
        beginningOfWeek = months[cMonth] + ' ';

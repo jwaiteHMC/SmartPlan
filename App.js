@@ -24,7 +24,7 @@ global.getStartTimes = (start, end) => {
     
   }
 
-
+global.num = 42; 
 
 export default class App extends React.Component {
   constructor(props){

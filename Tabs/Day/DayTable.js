@@ -30,14 +30,15 @@ export default class DayTable extends React.Component {
         if(global.startTimes.includes(i)){
           rowData.push("Event Begins");
         }
-        else if(global.endTimes.includes(i)){
-          rowData.push("----------------------------------------------------------")
+        else if(global.endtimes.includes(i)){
+          rowData.push("--------------------------------------------------------------------------------------------");
         }
-        else{
-          rewData.push("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||")
+        else if(global.mediumTimes.includes(i)){
+          rowData.push("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
         }
         tableData.push(rowData);
-        }
+      }
+        
         
       return (
         <View style={daytablestyles.container}>

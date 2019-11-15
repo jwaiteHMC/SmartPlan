@@ -16,18 +16,14 @@ global.getTimeBlock = (time) => {
 global.getStartTimes = (start, end) => {
   newStart = global.getTimeBlock(start);
   newEnd = global.getTimeBlock(end);
-  for(let x = newStart; x <= newEnd; x++ ){
-    if(x == newStart){
-      global.startTimes.push(x);
+  global.startTimes.push(newStart);
+  global.endtimes.push(newEnd);
+  for(let x = newStart + 1; x < newEnd; x++ ){
+      mediumTimes.push(x);
     }
-    else if(x == newEnd){
-      global.endTimes.push(x);
-    }
-    else{
-      global.mediumTimes.push(x);
-    }
+    
   }
-}
+
 
 
 export default class App extends React.Component {

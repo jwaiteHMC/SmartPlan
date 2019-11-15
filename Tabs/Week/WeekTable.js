@@ -56,8 +56,8 @@ export default class WeekTable extends React.Component {
                       key={index}
                       data={rowData}
                       widthArr={state.widthArr}
-                      style={[weektablestyles.row, index%2 && {backgroundColor: '#F7F6E7'}]}
-                      //style={[weektablestyles.row]} // make all rows white 
+                      //style={[weektablestyles.row, index%2 && {backgroundColor: '#85c2ff'}]}
+                      style={[weektablestyles.row]} // make all rows white 
                       textStyle={weektablestyles.text}
                     />
                   ))

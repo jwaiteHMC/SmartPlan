@@ -13,6 +13,7 @@ function daysInMonth (month, year) {
     return new Date(year, month + 1, 0).getDate();
 }
 
+// Calculates the day of the week that the first day of the month falls on
 function calculateBeginningOfMonthWeekday() {
     var today = new Date(); // Date object representing the current day
 
@@ -20,11 +21,14 @@ function calculateBeginningOfMonthWeekday() {
     var cDayOfWeek = today.getDay();
     var cMonth = today.getMonth(); 
     var cYear = today.getYear();
-   
+  
+    // Day of the week of the first day of the month 
     var bmDayOfWeek = new Date(cYear + "-" + cMonth + "-01").getDay();
-    
+   
+    //Shift the result down by 1 (to get the correct answer) 
     bmDayOfWeek -= 1;
-    
+   
+    // Handle going below 0 when we shift the bmDayOfWeek variable down 
     if(bmDayOfWeek == -1) {
         return 6;
     } else{

@@ -5,6 +5,9 @@ import * as firebase from 'firebase'
 global.startTimes = [];
 global.endtimes = [];
 global.mediumTimes = [];
+global.restrictionStartTimes = [];
+global.restrictionMediumTimes = [];
+global.restrictionEndTimes = [];
 
 global.getTimeBlock = (time) => {
   hourMinute = time.split(":");
@@ -24,20 +27,33 @@ global.getStartTimes = (start, end) => {
     
   }
 
+global.getRestrictionStartTimes = (start, end) => {
+  newStart = global.getTimeBlock(start);
+  newEnd = global.getTimeBlock(end);
+  global.restrictionStartTimes.push(newStart);
+  global.restrictionEndTimes.push(newEnd);
+  for(let x = newStart + 1; x < newEnd; x++ ){
+      global.restrictionMediumTimes.push(x);
+    }
+    
+  }
+
+
 global.num = 42; 
 
 export default class App extends React.Component {
   constructor(props){
     super(props);
       if(!firebase.apps.length) {firebase.initializeApp(NewFirebase.FirebaseConfig); }
-      global.tableData = [];  
-      const itemsRef = firebase.database().ref('event');
-      itemsRef.on('value', (snapshot) => {
+      global.eventData = [];  
+      global.restrictionData = [];
+      const eventItemsRef = firebase.database().ref('event');
+      eventItemsRef.on('value', (snapshot) => {
       let items = snapshot.val();
-      let newTable = [];
+      let newEventTable = [];
         //update locally stores list if database changes 
         for (let item in items) {
-        newTable.push({
+        newEventTable.push({
           
           id: item,
           num: items[item].num,
@@ -48,10 +64,31 @@ export default class App extends React.Component {
         });
       }
       //access the global variable that stores our data locally
-      global.tableData = newTable;
+      global.eventData = newEventTable;
       //force re-render in order to update the list
       this.forceUpdate();
     });   
+    const restrictionItemsRef = firebase.database().ref('restriction');
+      restrictionItemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newRestrictionTable = [];
+        //update locally stores list if database changes 
+        for (let item in items) {
+        newRestrictionTable.push({
+          
+          id: item,
+          num: items[item].num,
+          restrictionName: items[item].restrictionName, 
+          date: items[item].date,
+          timeStart: items[item].timeStart,
+          timeEnd: items[item].timeEnd,
+        });
+      }
+      //access the global variable that stores our data locally
+      global.restrictionData = newRestrictionTable;
+      //force re-render in order to update the list
+      this.forceUpdate();
+    });  
   }
   render() {
     return <AppContainer />;

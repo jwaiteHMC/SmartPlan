@@ -4,15 +4,15 @@ import { Table, Row,} from 'react-native-table-component';
 import NewFirebase from './NewFirebase'
 import * as firebase from 'firebase' 
 
-global.eventData = []
-export default class EventList extends React.Component {
+global.tableData = []
+export default class RestrictionList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {  
-      tableHead: ['Event', 'Date', 'Description', 'Time Start', 'Time End', 'Remove'],
+      tableHead: ['Restriction', 'Date', 'Description', 'Time Start', 'Time End', 'Remove'],
       widthArr: [50, 120 , 200,  80, 80, 80],
       index: 1, 
-      eventName: '', 
+      restrictionName: '', 
       date: '',
       timeStart: '',
       timeEnd: '',
@@ -21,22 +21,22 @@ export default class EventList extends React.Component {
     //Initialize firebase  
     if(!firebase.apps.length) {firebase.initializeApp(NewFirebase.FirebaseConfig); }
   }
-  //Add the input information to the the table storing event information
+  //Add the input information to the the table storing restriction information
   onHandleSubmit(){
-    const itemsRef = firebase.database().ref('event');
-    const event = {
+    const itemsRef = firebase.database().ref('restriction');
+    const restriction = {
       num: this.state.index,
-      eventName: this.state.eventName, 
+      restrictionName: this.state.restrictionName, 
       date: this.state.date,
       timeStart: this.state.timeStart,
       timeEnd: this.state.timeEnd,
     }
 
-    itemsRef.push(event);
+    itemsRef.push(restriction);
 
 
     this.setState({
-      eventName: '',
+      restrictionName: '',
       index: this.state.index + 1,
       date: '',
       timeStart: '',
@@ -44,7 +44,7 @@ export default class EventList extends React.Component {
     })
   }
   componentDidMount() {
-    const itemsRef = firebase.database().ref('event');
+    const itemsRef = firebase.database().ref('restriction');
     itemsRef.on('value', (snapshot) => {
       let items = snapshot.val();
       let newTable = [];
@@ -54,21 +54,21 @@ export default class EventList extends React.Component {
           
           id: item,
           num: items[item].num,
-          eventName: items[item].eventName, 
+          restrictionName: items[item].restrictionName, 
           date: items[item].date,
           timeStart: items[item].timeStart,
           timeEnd: items[item].timeEnd,
         });
       }
       //access the global variable that stores our data locally
-      global.eventData = newTable;
+      global.tableData = newTable;
       //force re-render in order to update the list
       this.forceUpdate();
     });
   }
   
   removeItem(itemId) {
-    const itemRef = firebase.database().ref(`/event/${itemId}`);
+    const itemRef = firebase.database().ref(`/restriction/${itemId}`);
     itemRef.remove(); 
   }
   render() {
@@ -86,13 +86,13 @@ export default class EventList extends React.Component {
         <View style={{flexDirection: 'row', padding: 10}}>
         <TextInput
           style={{height: 40, width: 200}}
-          placeholder="Event Name"
-          onChangeText={(eventName) => this.setState({eventName})}
-          value={this.state.eventName}
+          placeholder="Restriction Name"
+          onChangeText={(restrictionName) => this.setState({restrictionName})}
+          value={this.state.restrictionName}
         />
         <TextInput
           style={{height: 40, width: 200}}
-          placeholder="Event Date"
+          placeholder="Restriction Date"
           onChangeText={(date) => this.setState({date})}
           value={this.state.date}
         />
@@ -215,7 +215,7 @@ export default class EventList extends React.Component {
         </View>
           <Button
 
-          title="Add New Event"
+          title="Add New Restriction"
           
           onPress={() => this.onHandleSubmit()}/>
         <ScrollView horizontal={true}>
@@ -223,13 +223,13 @@ export default class EventList extends React.Component {
             <Table borderStyle={{borderWidth: 4, borderColor: '#C1C0B9'}}>
               <Row data={state.tableHead} widthArr={state.widthArr} style={styles.header} textStyle={styles.text}/>
             </Table>
-            <ScrollView style={eventStyles.dataWrapper}>
+            <ScrollView style={restrictionStyles.dataWrapper}>
               <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
                 {
-                  global.eventData.map((item) => (
+                  global.tableData.map((item) => (
                     <Row 
                       key={item.id}
-                      data={[item.num,item.date,item.eventName,item.timeStart, item.timeEnd, RemoveButton(item.id)]}
+                      data={[item.num,item.date,item.restrictionName,item.timeStart, item.timeEnd, RemoveButton(item.id)]}
                       widthArr={state.widthArr}
                       style={[styles.row, item%2 && {backgroundColor: '#F7F6E7'}]}
                       textStyle={styles.text}
@@ -244,7 +244,7 @@ export default class EventList extends React.Component {
     )
   }
 }
-const eventStyles = StyleSheet.create({
+const restrictionStyles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#fff'},
     dataWrapper: { marginTop: -1 },
     row: {backgroundColor: '#E7E6E1' }

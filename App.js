@@ -27,11 +27,23 @@ global.getStartTimes = (start, end) => {
     
   }
 
+// Function to update the restriction time block arrays
+// with the the first time block of a restriction, the
+// final time block of a restriction, and all other time
+// blocks in between of that restriction.
 global.getRestrictionStartTimes = (start, end) => {
-  newStart = global.getTimeBlock(start);
-  newEnd = global.getTimeBlock(end);
+  newStart = global.getTimeBlock(start); // Get time block of beginning of restriction
+  newEnd = global.getTimeBlock(end); // Get time block of end of restriction
+
+  // Add the calcualted start block to the list of restriction start times
   global.restrictionStartTimes.push(newStart);
+ 
+  // Add the calcualted start block to the list of restriction start times
   global.restrictionEndTimes.push(newEnd);
+ 
+  // Add all time blocks between the calculated start and end time blocks
+  // to the list of time blocks between start and end time blocks for
+  // restrictions. 
   for(let x = newStart + 1; x < newEnd; x++ ){
       global.restrictionMediumTimes.push(x);
     }

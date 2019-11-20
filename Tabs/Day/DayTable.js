@@ -8,6 +8,8 @@ function getFormattedCurrentDay() {
         var day = cDate.getDate();
         return(`${month}/${day}`);
     } 
+
+  
 function getCellStyle(colNum, contents, rowNum) {
         switch(colNum) {
             case 0: {
@@ -47,7 +49,6 @@ export default class DayTable extends React.Component {
         tableHead: ['Time', 'Events'],
         widthArr: [60, 355]
       }
-
     }
      
     render() {

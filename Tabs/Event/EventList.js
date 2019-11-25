@@ -70,6 +70,9 @@ export default class EventList extends React.Component {
   removeItem(itemId) {
     const itemRef = firebase.database().ref(`/event/${itemId}`);
     itemRef.remove(); 
+    global.evenData = global.eventData.filter(function( event ) {
+        return event.id != itemRef;
+    });
     this.forceUpdate();
   }
   render() {

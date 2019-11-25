@@ -56,7 +56,12 @@ export default class DayTable extends React.Component {
       const tableData = [];
       var currentDayEventNames = [];
       var currentDayRestrictionNames = [];
-
+      global.startTimes = [];
+      global.endtimes = [];
+      global.mediumTimes = [];
+      global.restrictionStartTimes = [];
+      global.restrictionEndTimes = [];
+      global.restrictionMediumTimes = [];
       var currentDay = getFormattedCurrentDay();
       console.log(currentDay);
       for(let j = 0; j < global.eventData.length; j++){
@@ -107,7 +112,7 @@ export default class DayTable extends React.Component {
         }
         tableData.push(rowData);
       }
-        
+       console.log("I AM HERE RIGHT NOW!"); 
         
       return (
         <View style={daytablestyles.container}>

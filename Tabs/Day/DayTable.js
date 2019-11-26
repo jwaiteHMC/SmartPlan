@@ -2,10 +2,9 @@ import React from 'react';
 import {StyleSheet, View, ScrollView,} from 'react-native';
 import {Table, TableWrapper, Row, Cell,} from 'react-native-table-component';
 
-function getFormattedCurrentDay() {
-        var cDate = new Date();
-        var month = cDate.getMonth() + 1;
-        var day = cDate.getDate();
+function getFormattedCurrentDay(date) {
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
         return(`${month}/${day}`);
     } 
 
@@ -43,7 +42,7 @@ function getCellStyle(colNum, contents, rowNum) {
 // creates and renders Day table
 export default class DayTable extends React.Component {
     constructor(props) {
-      todayDay = new Date().getDate();
+      currentDayPage = new Date();
       super(props);
       this.state = {
         tableHead: ['Time', 'Events'],
@@ -56,13 +55,15 @@ export default class DayTable extends React.Component {
       const tableData = [];
       var currentDayEventNames = [];
       var currentDayRestrictionNames = [];
+
       global.startTimes = [];
       global.endtimes = [];
       global.mediumTimes = [];
       global.restrictionStartTimes = [];
       global.restrictionEndTimes = [];
       global.restrictionMediumTimes = [];
-      var currentDay = getFormattedCurrentDay();
+      var currentDay = getFormattedCurrentDay(currentDayPage);
+
       console.log(currentDay);
       for(let j = 0; j < global.eventData.length; j++){
         if(global.eventData[j].date == currentDay) {

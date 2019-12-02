@@ -8,6 +8,15 @@ function getFormattedCurrentDay(date) {
         return(`${month}/${day}`);
     } 
 
+function incrementDay(date){
+  date.setDate(date.getDate() + 1);
+  return date;
+}
+
+function decrementDay(date){
+  date.setDate(date.getDate() - 1);
+  return date;
+}
   
 function getCellStyle(colNum, contents, rowNum) {
         switch(colNum) {
@@ -116,7 +125,7 @@ export default class DayTable extends React.Component {
        console.log("I AM HERE RIGHT NOW!"); 
         
       return (
-        <View style={daytablestyles.container}>
+        <View style={daytablestyles.container}> 
           <ScrollView horizontal={true}>
             <View>
               <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>

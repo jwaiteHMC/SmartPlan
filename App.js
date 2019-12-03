@@ -8,6 +8,7 @@ global.mediumTimes = [];
 global.restrictionStartTimes = [];
 global.restrictionMediumTimes = [];
 global.restrictionEndTimes = [];
+global.currentDayPage = new Date();
 
 global.getTimeBlock = (time) => {
   hourMinute = time.split(":");

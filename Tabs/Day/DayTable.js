@@ -8,15 +8,6 @@ function getFormattedCurrentDay(date) {
         return(`${month}/${day}`);
     } 
 
-function incrementDay(date){
-  date.setDate(date.getDate() + 1);
-  return date;
-}
-
-function decrementDay(date){
-  date.setDate(date.getDate() - 1);
-  return date;
-}
   
 function getCellStyle(colNum, contents, rowNum) {
         switch(colNum) {
@@ -51,7 +42,6 @@ function getCellStyle(colNum, contents, rowNum) {
 // creates and renders Day table
 export default class DayTable extends React.Component {
     constructor(props) {
-      currentDayPage = new Date();
       super(props);
       this.state = {
         tableHead: ['Time', 'Events'],
@@ -71,7 +61,7 @@ export default class DayTable extends React.Component {
       global.restrictionStartTimes = [];
       global.restrictionEndTimes = [];
       global.restrictionMediumTimes = [];
-      var currentDay = getFormattedCurrentDay(currentDayPage);
+      var currentDay = getFormattedCurrentDay(global.currentDayPage);
 
       console.log(currentDay);
       for(let j = 0; j < global.eventData.length; j++){

@@ -42,7 +42,6 @@ function getCellStyle(colNum, contents, rowNum) {
 // creates and renders Day table
 export default class DayTable extends React.Component {
     constructor(props) {
-      currentDayPage = new Date();
       super(props);
       this.state = {
         tableHead: ['Time', 'Events'],
@@ -62,7 +61,7 @@ export default class DayTable extends React.Component {
       global.restrictionStartTimes = [];
       global.restrictionEndTimes = [];
       global.restrictionMediumTimes = [];
-      var currentDay = getFormattedCurrentDay(currentDayPage);
+      var currentDay = getFormattedCurrentDay(global.currentDayPage);
 
       console.log(currentDay);
       for(let j = 0; j < global.eventData.length; j++){
@@ -116,7 +115,7 @@ export default class DayTable extends React.Component {
        console.log("I AM HERE RIGHT NOW!"); 
         
       return (
-        <View style={daytablestyles.container}>
+        <View style={daytablestyles.container}> 
           <ScrollView horizontal={true}>
             <View>
               <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>

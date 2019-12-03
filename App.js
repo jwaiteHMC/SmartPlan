@@ -8,6 +8,7 @@ global.mediumTimes = [];
 global.restrictionStartTimes = [];
 global.restrictionMediumTimes = [];
 global.restrictionEndTimes = [];
+global.currentDayPage = new Date();
 
 global.getTimeBlock = (time) => {
   hourMinute = time.split(":");
@@ -52,6 +53,8 @@ global.getRestrictionStartTimes = (start, end) => {
 
 
 global.num = 42; 
+
+
 
 export default class App extends React.Component {
   constructor(props){
@@ -102,6 +105,8 @@ export default class App extends React.Component {
       this.forceUpdate();
     });  
   }
+
+
   render() {
     return <AppContainer />;
 

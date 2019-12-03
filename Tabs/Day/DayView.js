@@ -9,12 +9,16 @@ import App from '../../App';
 
 function incrementDay(){
   global.currentDayPage.setDate(global.currentDayPage.getDate() + 1);
-  //need to force App to update 
+  //need to force App to update to reflect change (code below does not work, but omething like this)
+  //DayView.forceUpdate();
+  //DayTable.forceUpdate();
 }
 
 function decrementDay(){
   global.currentDayPage.setDate(global.currentDayPage.getDate() - 1);
-  //need to force App to update 
+  //need to force App to update to reflect change (code below does not work, but omething like this)
+  //forceUpdate();
+   //DayTable.forceUpdate();
 }
 
  //In this class definition, the Day Tab of the SmartPlan App is defined.

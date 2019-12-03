@@ -54,6 +54,8 @@ global.getRestrictionStartTimes = (start, end) => {
 
 global.num = 42; 
 
+
+
 export default class App extends React.Component {
   constructor(props){
     super(props);
@@ -103,6 +105,8 @@ export default class App extends React.Component {
       this.forceUpdate();
     });  
   }
+
+
   render() {
     return <AppContainer />;
 

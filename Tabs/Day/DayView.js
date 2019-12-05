@@ -6,23 +6,23 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 import DayTable from './DayTable'
 import App from '../../App';
 
-
-function incrementDay(){
-  global.currentDayPage.setDate(global.currentDayPage.getDate() + 1);
-  //need to force App to update to reflect change (code below does not work, but omething like this)
-  //DayView.forceUpdate();
-  //DayTable.forceUpdate();
-}
-
-function decrementDay(){
-  global.currentDayPage.setDate(global.currentDayPage.getDate() - 1);
-  //need to force App to update to reflect change (code below does not work, but omething like this)
-  //forceUpdate();
-   //DayTable.forceUpdate();
-}
-
  //In this class definition, the Day Tab of the SmartPlan App is defined.
 export default class DayView extends React.Component{
+
+
+incrementDay(){
+  global.currentDayPage.setDate(global.currentDayPage.getDate() + 1);
+  //need to force App to update to reflect change (code below does not work, but omething like this)
+  this.forceUpdate();
+}
+
+
+decrementDay(){
+  global.currentDayPage.setDate(global.currentDayPage.getDate() - 1);
+  //need to force App to update to reflect change (code below does not work, but omething like this)
+  this.forceUpdate();
+}
+
  render(){
    todayDay = currentDayPage.getDate(); // gets day
    todayMonth =  currentDayPage.getMonth(); // gets month (numerical representation, starts from 0)
@@ -32,12 +32,12 @@ export default class DayView extends React.Component{
 
    return(
    <View style={daytablestyles.container}>
-      <TouchableOpacity onPress={() => incrementDay()}> 
+      <TouchableOpacity onPress={() => this.incrementDay()}> 
         <View style={{flexDirection: 'row-reverse', height: 80, paddingLeft: 20, paddingTop: 50}}>
           <Text style={{fontSize: 15, fontWeight: 'bold'}}>Next Day</Text>
         </View> 
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => decrementDay()}>
+      <TouchableOpacity onPress={() => this.decrementDay()}>
         <View style={{flexDirection: 'row-reverse', height: 80, paddingTop: 30, paddingLeft: 20, justifyContent: 'right'}}>
           <Text style={{fontSize: 15, fontWeight: 'bold'}}>Previous Day</Text>
         </View> 

@@ -31,24 +31,25 @@ decrementDay(){
    monthName = months[todayMonth];
 
    return(
-   <View style={daytablestyles.container}>
-      <TouchableOpacity onPress={() => this.incrementDay()}> 
-        <View style={{flexDirection: 'row-reverse', height: 80, paddingLeft: 20, paddingTop: 50}}>
-          <Text style={{fontSize: 15, fontWeight: 'bold'}}>Next Day</Text>
-        </View> 
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => this.decrementDay()}>
-        <View style={{flexDirection: 'row-reverse', height: 80, paddingTop: 30, paddingLeft: 20, justifyContent: 'right'}}>
-          <Text style={{fontSize: 15, fontWeight: 'bold'}}>Previous Day</Text>
-        </View> 
-      </TouchableOpacity>
-     <View style={{flexDirection: 'row', height: 30, paddingTop: 0, justifyContent: 'center'}}>
-       <Text style = {{fontSize: 20, fontWeight: 'bold'}}> Today is: {monthName} {todayDay}</Text> 
-     </View>
-     <View style= {daytablestyles.container}>
-       <DayTable/> 
-     </View>
-   </View>
+    <View style={daytablestyles.container}>
+
+        <View style={{flexDirection: 'row', paddingTop: 25}}>
+            <TouchableOpacity onPress={() => this.decrementDay()} style={{flex: 1, borderWidth: 2, borderColor: '#000000'}}>
+                <Text style={{fontSize: 15, fontWeight: 'bold', textAlign: 'center', padding: 3}}>Previous Day</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.incrementDay()} style={{flex: 1, borderWidth: 2, borderColor: '#000000'}}> 
+                <Text style={{fontSize: 15, fontWeight: 'bold', textAlign: 'center', padding: 3}}>Next Day</Text>
+            </TouchableOpacity>
+        </View>
+
+        <View style={{flexDirection: 'row', height: 30, paddingTop: 0, justifyContent: 'center'}}>
+            <Text style = {{fontSize: 20, fontWeight: 'bold'}}> Today is: {monthName} {todayDay}</Text> 
+        </View>
+
+        <View style= {daytablestyles.container}>
+            <DayTable/> 
+        </View>
+    </View>
    )}
 }
 

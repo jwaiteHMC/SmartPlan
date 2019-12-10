@@ -1,21 +1,24 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity, Picker} from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, TextInput, TouchableOpacity, Picker, CheckBox} from 'react-native';
 import { Table, Row,} from 'react-native-table-component';
 import NewFirebase from './NewFirebase'
+import EventCard from './EventCard'
 import * as firebase from 'firebase' 
 
 global.eventData = []
+
 export default class EventList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {  
-      tableHead: ['Event', 'Date', 'Description', 'Time Start', 'Time End', 'Remove'],
-      widthArr: [50, 120 , 200,  80, 80, 80],
-      index: 1, 
+      tableHead: ['Date', 'Description', 'Time Start', 'Time End', 'Remove'],
+      widthArr: [50 , 200,  80, 80, 80],
       eventName: '', 
       date: '',
       timeStart: '',
       timeEnd: '',
+      autoSchedule: false,
+      eventCardList: [],
     }
     //this.handleSubmit = this.handleSubmit.bind(this);
     //Initialize firebase  
@@ -25,11 +28,11 @@ export default class EventList extends React.Component {
   onHandleSubmit(){
     const itemsRef = firebase.database().ref('event');
     const event = {
-      num: this.state.index,
       eventName: this.state.eventName, 
       date: this.state.date,
       timeStart: this.state.timeStart,
       timeEnd: this.state.timeEnd,
+      autoSchedule: this.state.autoSchedule,
     }
 
     itemsRef.push(event);
@@ -37,10 +40,10 @@ export default class EventList extends React.Component {
 
     this.setState({
       eventName: '',
-      index: this.state.index + 1,
       date: '',
       timeStart: '',
       timeEnd: '',
+      autoSchedule: false,
     })
   }
   componentDidMount() {
@@ -53,11 +56,11 @@ export default class EventList extends React.Component {
         newTable.push({
           
           id: item,
-          num: items[item].num,
           eventName: items[item].eventName, 
           date: items[item].date,
           timeStart: items[item].timeStart,
           timeEnd: items[item].timeEnd,
+          autoSchedule: items[item].autoSchedule,
         });
       }
       //access the global variable that stores our data locally
@@ -68,13 +71,30 @@ export default class EventList extends React.Component {
   }
   
   removeItem(itemId) {
+    console.log(itemId);
     const itemRef = firebase.database().ref(`/event/${itemId}`);
     itemRef.remove(); 
     global.evenData = global.eventData.filter(function( event ) {
         return event.id != itemRef;
     });
-    this.forceUpdate();
   }
+
+  generateEventCards() {
+    return global.eventData.map((event) => {
+        return (
+            <React.Fragment key={event.id}>
+            <View style={{padding:10}}>
+                <EventCard key={event.id} id={event.id} name={event.eventName} date={event.date} startTime={event.timeStart} endTime={event.timeEnd} deleteMethod={this.removeItem} autoSchedule={event.autoSchedule}/>
+            </View>
+            </React.Fragment>
+        )
+    })
+  }
+
+  changeAutoCheckbox() {
+    this.setState({autoSchedule: !this.state.autoSchedule});
+  }
+
   render() {
     const state = this.state; 
     const RemoveButton = (index) => (
@@ -87,6 +107,7 @@ export default class EventList extends React.Component {
     );
     return (
       <View>
+        <View style={{padding: 10, borderRadius: 25, backgroundColor: '#F0E86C'}}>
         <View style={{flexDirection: 'row', padding: 10}}>
         <TextInput
           style={{height: 40, width: 200}}
@@ -158,8 +179,6 @@ export default class EventList extends React.Component {
         <Picker.Item label = "23:00" value = "23:00"></Picker.Item>
         <Picker.Item label = "23:30" value = "23:30"></Picker.Item>
         </Picker>
-        </View>
-        <View style={{flexDirection: 'row'}}>
           <Text>Time End</Text>
         <Picker
           style = {{width: 120}}
@@ -217,33 +236,21 @@ export default class EventList extends React.Component {
         <Picker.Item label = "23:30" value = "23:30"></Picker.Item>
         </Picker>
         </View>
-          <Button
-
-          title="Add New Event"
-          
-          onPress={() => this.onHandleSubmit()}/>
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{borderWidth: 4, borderColor: '#C1C0B9'}}>
-              <Row data={state.tableHead} widthArr={state.widthArr} style={styles.header} textStyle={styles.text}/>
-            </Table>
-            <ScrollView style={eventStyles.dataWrapper}>
-              <Table borderStyle={{borderWidth: 1, borderColor: '#C1C0B9'}}>
-                {
-                  global.eventData.map((item) => (
-                    <Row 
-                      key={item.id}
-                      data={[item.num,item.date,item.eventName,item.timeStart, item.timeEnd, RemoveButton(item.id)]}
-                      widthArr={state.widthArr}
-                      style={[styles.row, item%2 && {backgroundColor: '#F7F6E7'}]}
-                      textStyle={styles.text}
-                    />
-                  ))
-                }
-              </Table> 
-            </ScrollView>
-          </View>   
-        </ScrollView>      
+        <View style={{flexDirection: 'row'}}>
+            <CheckBox
+                title='Auto Schedule'
+                value={this.state.autoSchedule}
+                onChange={() => this.changeAutoCheckbox()}
+            />
+    
+        </View>
+        </View>
+          <TouchableOpacity style={styles.addEventButton} onPress={() => this.onHandleSubmit()}>
+            <Text style={{textAlign: 'center'}}> Add New Event </Text>
+          </TouchableOpacity>
+          <ScrollView style={{borderWidth: 2}}> 
+            {this.generateEventCards()}
+          </ScrollView>
       </View>
     )
   }
@@ -256,6 +263,7 @@ const eventStyles = StyleSheet.create({
   });
 
   const styles = StyleSheet.create({
+    addEventButton: {borderRadius: 25, padding: 15, backgroundColor: '#FF8C00'},
     container: { flex: 1, padding: 16,justifyContent: 'center', color: 'red', paddingTop: 60, backgroundColor: '#fff' },
     head: {  height: 40,  backgroundColor: '#f1f8ff'  },
     wrapper: { flexDirection: 'row' },

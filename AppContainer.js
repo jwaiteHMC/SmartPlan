@@ -24,7 +24,7 @@ export default class AppContainer extends React.Component{
       }); 
       const AppContainer = createAppContainer(AppNavigator);
       return(
-        <AppContainer/>
+            <AppContainer/>
       )
     }
   }

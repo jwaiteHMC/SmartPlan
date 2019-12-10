@@ -19,7 +19,7 @@ export default class EventView extends React.Component{
       flex: 1, 
       padding: 16, 
       paddingTop: 30, 
-      backgroundColor: '#fff'
+      backgroundColor: '#EFE2BA'
     },
     header: { 
       height: 50, 

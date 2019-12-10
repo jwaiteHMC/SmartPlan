@@ -79,9 +79,13 @@ export default class EventList extends React.Component {
     });
   }
 
+/* Function to generate an EventCard component to be displayed for every */
   generateEventCards() {
+    // Loop through all events
     return global.eventData.map((event) => {
         return (
+            // May need this React.Fragment with a unique key since we are dynamically generating
+            // the EventCard components
             <React.Fragment key={event.id}>
             <View style={{padding:10}}>
                 <EventCard key={event.id} id={event.id} name={event.eventName} date={event.date} startTime={event.timeStart} endTime={event.timeEnd} deleteMethod={this.removeItem} autoSchedule={event.autoSchedule}/>
